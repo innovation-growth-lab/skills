@@ -1,9 +1,0 @@
-{
-  "name": "igl",
-  "description": "Innovation Growth Lab's skills for Claude Code.",
-  "version": "0.1.0",
-  "author": {
-    "name": "Innovation Growth Lab"
-  },
-  "repository": "https://github.com/innovation-growth-lab/skills"
-}

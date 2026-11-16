@@ -7,8 +7,14 @@
   "plugins": [
     {
       "name": "igl",
-      "source": "./plugins/igl",
-      "description": "Innovation Growth Lab's skills for Claude Code: igl-prototype designs and builds tool prototypes on frontend-boilerplate."
+      "source": "./",
+      "strict": false,
+      "description": "Innovation Growth Lab's skills for Claude Code: igl-prototype, html-to-figma and screenshot-to-figma.",
+      "skills": [
+        "./igl-prototype",
+        "./html-to-figma",
+        "./screenshot-to-figma"
+      ]
     }
   ]
 }

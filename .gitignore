@@ -1,7 +1,6 @@
-dist/
-node_modules/
-.DS_Store
-
 # Internal pages kept for reference while designing skills. This repo is
-# public: never commit or package them (igl-artifact/README.md).
+# public: never commit them, or put them in a skill folder.
 private/
+
+.DS_Store
+__pycache__/

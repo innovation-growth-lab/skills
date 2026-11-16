@@ -1,8 +1,44 @@
+/* igl.css: the IGL artifact stylesheet. Pages made from template.html carry
+   it inline (SKILL.md, Build it). Don't edit it inside a page: add to the
+   page's second <style> block instead. */
+
+/* The IGL palette and fonts, copied from frontend-boilerplate's
+   src/index.css in November 2026. If the brand colours change there, change
+   them here too. */
+:root {
+  --font-classic-body: 'Muli', 'Mulish', 'Century Gothic', sans-serif;
+  --font-classic-display: 'Brown', 'Century Gothic', sans-serif;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-dark-blue: #092640;
+  --color-blue: #1f5dad;
+  --color-blue-60: #7dace8;
+  --color-blue-30: #bed5f3;
+  --color-blue-10: #dfeaf9;
+  --color-red: #ff5836;
+  --color-red-80: #ff8268;
+  --color-red-60: #ffac9b;
+  --color-red-40: #ffd5cd;
+  --color-yellow: #fab61b;
+  --color-yellow-80: #fbc854;
+  --color-yellow-60: #fddb8d;
+  --color-yellow-30: #feedc6;
+  --color-green: #00b2a2;
+  --color-green-40: #99e0da;
+  --color-green-20: #ccf0ec;
+  --color-grey: #ebebeb;
+  --color-grey-50: #f7f7f7;
+  --color-grey-150: #e0e0e0;
+  --color-grey-200: #d4d4d4;
+  --color-grey-300: #b4b4b4;
+  --color-grey-500: #767676;
+  --color-grey-700: #4a4a4a;
+}
+
 /* ---------------------------------------------------------------------------
    igl-artifact: the editorial look for IGL documents.
 
-   The palette above is generated from frontend-boilerplate's src/index.css.
-   Edit this part in igl-artifact/kit.css, not in igl.css. patterns.md shows the
+   patterns.md shows the
    markup for every class here.
    --------------------------------------------------------------------------- */
 

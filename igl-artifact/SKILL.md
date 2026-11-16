@@ -204,9 +204,14 @@ AI.
 
 ## 5. Build it
 
-1. **Copy `template.html` as the file you edit**; don't retype it. Its
-   first `<style>` block is the generated stylesheet: leave it alone. Put
-   anything the page needs in the second.
+1. **Make the page from `template.html` with this command**, run from
+   this skill's folder; never retype the template or the stylesheet:
+   ```sh
+   python3 -c "import pathlib as p; print(p.Path('template.html').read_text().replace('<link rel=\"stylesheet\" href=\"igl.css\">', '<style>\n' + p.Path('igl.css').read_text() + '</style>'), end='')" > /path/to/page.html
+   ```
+   It puts `igl.css` inline, since a page has to stand alone. That first
+   `<style>` block is the stylesheet: leave it alone. Put anything the
+   page needs in the second.
 2. **Fill the hero:**
    - Eyebrow: `Innovation Growth Lab · <context>`.
    - Headline: one phrase in `<em>`, which turns yellow.

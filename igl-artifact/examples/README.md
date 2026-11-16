@@ -47,8 +47,8 @@ What makes it work:
   and yellow, re-pointed in the page's second `<style>` block, because the
   subject has its own colours. Same structure and type.
 
-It links `../igl.css` to stay short to read; a real document has the
-stylesheet inline, as `template.html` does.
+It links `../igl.css` to stay short to read; a real page has the
+stylesheet inline (SKILL.md, Build it).
 
 What not to copy: it's long. A shorter subject needs fewer sections, not
 the same ones with less in them.
