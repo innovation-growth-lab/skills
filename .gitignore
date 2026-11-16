@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.DS_Store
+
+# Internal pages kept for reference while designing skills. This repo is
+# public: never commit or package them (igl-artifact/README.md).
+private/

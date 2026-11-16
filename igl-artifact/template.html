@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- Look: data-type="editorial" or "classic"; data-corners="square" or "soft". -->
+<html lang="en-GB" data-type="editorial" data-corners="square">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document title · Innovation Growth Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Mulish:wght@400;700&display=swap">
+<style>
+/* IGL_CSS */
+</style>
+<style>
+/* This document's own styles. To give it its own palette, re-point the
+   roles here, e.g. :root { --hero: #10357e; --accent: #b07d10; } */
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span>Innovation Growth Lab · Context</span><!--igl:mark--></div>
+    <h1>The headline, with one <em>key phrase</em> picked out</h1>
+    <p class="standfirst">Two or three sentences: what this is, who it's for, and the one thing the reader should take away.</p>
+    <div class="hero-meta">
+      <div>Prepared by<b>Name</b></div>
+      <div>Position at<b>Month 2026</b></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#first">First section</a>
+    <a href="#detail">The detail</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<section class="section" id="first">
+  <p class="rule">The tag</p>
+  <h2>A heading that states the section's point</h2>
+  <p class="lede">The point of the section in one or two sentences. A reader who stops here has the gist.</p>
+  <div class="cols-2">
+    <div class="panel">
+      <span class="label">One · Short label</span>
+      <p>Supporting point.</p>
+    </div>
+    <div class="panel">
+      <span class="label">Two · Short label</span>
+      <p>Supporting point.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="detail">
+  <p class="rule">The detail</p>
+  <h2>Everything else, collapsed until wanted</h2>
+  <div class="tools"><button class="btn-quiet" type="button" data-open-all>Open all</button></div>
+  <details class="item" id="item-one">
+    <summary><span class="item-ref">01</span><span class="item-title">An item</span><span class="pill pill-active">Under way</span></summary>
+    <div class="item-body">
+      <h4>Where it stands</h4>
+      <p>The detail.</p>
+    </div>
+  </details>
+</section>
+
+<footer class="footer">
+  <p>Innovation Growth Lab · Month 2026</p>
+  <p class="ai-note">Made with Claude</p>
+</footer>
+
+</div>
+</main>
+
+<script>
+// Open every collapsed item in the nearest section, or close them again.
+document.querySelectorAll('[data-open-all]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const items = button.closest('section').querySelectorAll('details');
+    const opening = [...items].some((d) => !d.open);
+    items.forEach((d) => { d.open = opening; });
+    button.textContent = opening ? 'Close all' : 'Open all';
+  });
+});
+
+// Follow a link within the page. With views (.view), show the one it points
+// to, or the one holding what it points to: the first when it points nowhere.
+// A link to a collapsed item opens it.
+const views = [...document.querySelectorAll('.view')];
+function showTarget() {
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const view = target ? target.closest('.view') : views[0];
+  if (view) {
+    views.forEach((v) => { v.hidden = v !== view; });
+    document.querySelectorAll('.appbar nav a').forEach((a) => {
+      if (a.hash === `#${view.id}`) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  const details = target && target.closest('details');
+  if (details) details.open = true;
+  if (target && target === view) window.scrollTo(0, 0);
+  else if (target) target.scrollIntoView();
+}
+window.addEventListener('hashchange', showTarget);
+showTarget();
+
+// Print with every view shown and every item open.
+window.addEventListener('beforeprint', () => {
+  views.forEach((v) => { v.hidden = false; });
+  document.querySelectorAll('details.item').forEach((d) => { d.open = true; });
+});
+window.addEventListener('afterprint', showTarget);
+
+// <input class="filter" data-filter="table-id"> hides rows that don't match.
+document.querySelectorAll('[data-filter]').forEach((input) => {
+  const rows = document.getElementById(input.dataset.filter).querySelectorAll('tbody tr');
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    rows.forEach((row) => { row.hidden = q && !row.textContent.toLowerCase().includes(q); });
+  });
+});
+</script>
+</body>
+</html>

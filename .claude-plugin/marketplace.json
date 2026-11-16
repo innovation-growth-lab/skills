@@ -1,0 +1,14 @@
+{
+  "name": "igl-skills",
+  "description": "Innovation Growth Lab's Claude skills.",
+  "owner": {
+    "name": "Innovation Growth Lab"
+  },
+  "plugins": [
+    {
+      "name": "igl",
+      "source": "./plugins/igl",
+      "description": "Innovation Growth Lab's skills for Claude Code: igl-prototype designs and builds tool prototypes on frontend-boilerplate."
+    }
+  ]
+}

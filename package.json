@@ -1,0 +1,12 @@
+{
+  "name": "igl-skills",
+  "private": true,
+  "type": "module",
+  "description": "Claude skills for Innovation Growth Lab",
+  "scripts": {
+    "build": "node scripts/build-igl-artifact.js"
+  },
+  "engines": {
+    "node": ">=20.11"
+  }
+}
