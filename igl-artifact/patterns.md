@@ -18,7 +18,7 @@ trustworthy later.
 ```html
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow"><span>Innovation Growth Lab · Kestria engagement</span><!-- the IGL mark: copy the <svg class="logo"> from template.html --></div>
+    <div class="eyebrow"><span>Innovation Growth Lab · Kestria engagement</span><!--igl:mark--></div>
     <h1>Embedding experimentation in <em>Kestria's</em> innovation policy</h1>
     <p class="standfirst">One concentrated effort: making experimentation a normal part of how Kestria designs and funds its innovation policy, nationally and in its fourteen regions.</p>
     <div class="hero-meta">
@@ -38,7 +38,7 @@ action at most, in yellow.
 ```html
 <header class="hero">
   <div class="wrap wrap-narrow">
-    <div class="eyebrow"><span>Weekly digest · 5 Oct 2026</span><!-- the IGL mark: copy the <svg class="logo"> from template.html --></div>
+    <div class="eyebrow"><span>Weekly digest · 5 Oct 2026</span><!--igl:mark--></div>
     <h1>Funding opportunities, <em>this week</em></h1>
     <p class="standfirst">207 new and 33 updated opportunities were collected this week. 21 scored 70 or more against our criteria.</p>
     <div class="actions"><a class="btn" href="#top-picks">See the top picks →</a></div>
@@ -95,7 +95,7 @@ that says what it's for, not a hero.
 ```html
 <header class="appbar">
   <div class="wrap">
-    <a class="appbar-name" href="#start"><!-- the IGL mark: copy the <svg class="logo"> from template.html --><span>Expectations check</span></a>
+    <a class="appbar-name" href="#start"><!--igl:mark--><span>Expectations check</span></a>
     <nav aria-label="Views">
       <a href="#start">Start</a>
       <a href="#compare">Compare</a>

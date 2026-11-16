@@ -11,7 +11,7 @@ The aim is close fidelity, not pixel-perfection: positions within 1–2 px and t
 
 **If the page's HTML source or a URL is available and a browser can run, use `html-to-figma` instead.** It reads exact layout from the browser and is much faster. This skill is for when there's only a picture.
 
-The import rules, layer conventions and font names are in `figma-svg/`, an identical copy of html-to-figma's (change both):
+The import rules, layer conventions and font names are in `figma-svg/`, shared with html-to-figma:
 
 - `import-rules.md`: what Figma's importer accepts and how it maps elements to layers;
 - `fonts.md`: the IGL/Nesta font stack, Figma family names and glyph tells.

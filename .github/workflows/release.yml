@@ -1,0 +1,31 @@
+# Pushing a version tag (git tag v1.2.0 && git push origin v1.2.0) builds
+# every skill into a zip and publishes them as a GitHub release, where people
+# download skills for Claude chat. The zips carry igl-artifact's brand from
+# frontend-boilerplate as it is on its main branch at that moment.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: innovation-growth-lab/frontend-boilerplate
+          path: .boilerplate
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node src/build.mjs
+        env:
+          BOILERPLATE: .boilerplate
+      - run: gh release create "$GITHUB_REF_NAME" dist/*.zip --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

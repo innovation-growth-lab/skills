@@ -1,7 +1,6 @@
 # Skills
 
-Innovation Growth Lab's Claude skills. Each folder here is one skill,
-ready to use as it is: nothing to build.
+Innovation Growth Lab's Claude skills, one folder each.
 
 | Skill | Use it in | What it does |
 | --- | --- | --- |
@@ -17,14 +16,15 @@ igl-prototype.
 
 ## Adding a skill to Claude chat
 
-1. Download this repo: **Code → Download ZIP** on GitHub, then open the
-   zip.
-2. Compress the skill's folder on its own (on a Mac, right-click it →
-   **Compress**). You get, say, `igl-artifact.zip`.
-3. In Claude, open **Customize → Skills** and upload that zip. If you
-   have an older version, remove it first.
+1. Download the skill's zip from the
+   [latest release](https://github.com/innovation-growth-lab/skills/releases/latest),
+   for example `igl-artifact.zip`.
+2. In Claude, open **Customize → Skills** and upload it. If you have an
+   older version, remove it first.
 
-Uploaded skills don't update themselves: repeat this when a skill changes.
+Uploaded skills don't update themselves: repeat this when there's a new
+release. Use the release zips rather than the folders here, which aren't
+complete on their own (see Changing a skill).
 
 ## Adding a skill to Claude Code
 
@@ -44,34 +44,52 @@ claude plugin marketplace add innovation-growth-lab/skills
 claude plugin install igl@igl-skills
 ```
 
+Use one or the other, or each skill appears twice.
+
 ## Changing a skill
 
-Edit the files in its folder: there's one copy of each. Two things are
-duplicated on purpose, because each folder has to work on its own when
-uploaded:
+Edit the files in its folder. Everything has one home:
 
-- `figma-svg/` is the same in both Figma skills. Change both.
-- igl-artifact's colours (at the top of `igl.css`) and `logos/` come from
-  frontend-boilerplate's `src/index.css` and `src/assets/logos/`. If the
-  brand changes there, change them here.
+- `_shared/figma-svg/` is used by both Figma skills, through a link in
+  each.
+- igl-artifact's colours, fonts and logos live in frontend-boilerplate
+  (`src/index.css`, `src/assets/logos/`). The build adds them to the zip.
 
-To check igl-artifact's look, open `igl-artifact/template.html` or a page
-in `igl-artifact/examples/` in a browser.
+`node src/build.mjs` builds every skill as a release would, into `dist/`:
+a folder and a zip each, with links replaced by real files and
+igl-artifact's brand added. It fetches frontend-boilerplate from GitHub,
+or uses a checkout with `BOILERPLATE=<path>`. To check igl-artifact's
+look, build it and open `dist/igl-artifact/template.html` or a page in
+`dist/igl-artifact/examples/`.
 
 **Adding an example to igl-artifact.** The examples teach Claude more than
 the rules do, so add pages that are exemplary:
 
 1. Put the HTML in `igl-artifact/examples/`. Link `../igl.css` rather than
-   carrying the stylesheet, and swap embedded fonts or images for links
-   (a Google Fonts `<link>`, `../logos/…`), so the file stays short for
-   Claude to read.
+   carrying the stylesheet, use `<!--igl:mark-->` for the logo, and swap
+   embedded fonts or images for links (a Google Fonts `<link>`,
+   `../logos/…`), so the file stays short for Claude to read.
 2. Add a section to `igl-artifact/examples/README.md`: what the page is
    and who it's for, **what makes it work** (the design decisions worth
    copying), and **what not to copy**.
 
+## Releasing
+
+Tag a version and push the tag:
+
+```sh
+git tag v1.0.0 && git push origin v1.0.0
+```
+
+A GitHub workflow (`.github/workflows/release.yml`) builds every skill,
+with igl-artifact's brand from frontend-boilerplate's main branch at that
+moment, and publishes the zips as a release. Release again after the brand
+changes there.
+
 ## This repo is public
 
 Nothing internal goes in it: no names, strategy or unpublished figures.
-Keep internal pages you use as reference in `private/`, which git ignores.
-To use one as an example, make a version with invented content, as
+Keep internal pages you use as reference in `private/`, which git ignores;
+the build refuses to package anything git ignores. To use an internal page
+as an example, make a version with invented content, as
 `igl-artifact/examples/strategy-update.html` is.

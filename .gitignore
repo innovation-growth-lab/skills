@@ -2,5 +2,6 @@
 # public: never commit them, or put them in a skill folder.
 private/
 
+dist/
 .DS_Store
 __pycache__/

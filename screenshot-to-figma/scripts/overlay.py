@@ -6,7 +6,7 @@
 Writes DIR/diff.png: red = only in the render, cyan = only in the screenshot,
 grey = matches. With --zoom, also DIR/zoom.png: the box at 4x, screenshot on
 top, render below (use for single glyphs, badges and icons). The comparison
-itself lives in ../figma-svg/diff.py, an identical copy of html-to-figma's.
+itself lives in ../figma-svg/diff.py, shared with html-to-figma.
 """
 import argparse, io, os, sys
 import cairosvg

@@ -7,7 +7,7 @@ description: Rebuild a web page or app screen as Figma-ready SVGs, one per state
 
 Figma's SVG import turns `<text>` into editable text layers and `<g id>` into named groups, at no cost in Figma MCP credits. This skill writes those SVGs from the browser's own layout instead of measuring pixels. Boxes, borders, baselines, fonts and colours come from computed style, Range rects and `document.fonts`, so nothing is estimated.
 
-The import rules, layer conventions and font names are in `figma-svg/`, an identical copy of screenshot-to-figma's (change both). Read `import-rules.md` before changing what the extractor writes. `fonts.md` (and `figma-font-names.json`, which the extractor reads) map loaded families to Figma names, for example Muli to Mulish.
+The import rules, layer conventions and font names are in `figma-svg/`, shared with screenshot-to-figma. Read `import-rules.md` before changing what the extractor writes. `fonts.md` (and `figma-font-names.json`, which the extractor reads) map loaded families to Figma names, for example Muli to Mulish.
 
 **No browser?** If `scripts/setup.sh` can't start Chrome or Chromium (exit status 2), say so and use /screenshot-to-figma on a screenshot of the page instead.
 
