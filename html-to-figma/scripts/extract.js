@@ -316,7 +316,28 @@ async (opts) => {
       out.push({ t: 'rect', name: `Border ${d.s.toLowerCase()}`, x: r[0], y: r[1], w: r[2], h: r[3], fill: d.c.hex, fo: r2(d.c.a * op), box: r });
       if (d.st !== 'solid') log('approx', `${d.st} single-side border drawn solid`, el);
     }
-    if (cs.boxShadow && cs.boxShadow !== 'none') log('skip', `box-shadow skipped: ${cs.boxShadow}`, el);
+    if (cs.boxShadow && cs.boxShadow !== 'none') {
+      // Chrome computes each shadow as "<colour> <x> <y> <blur> <spread> [inset]". A shadow with no offset or
+      // blur and a positive spread (Tailwind's ring-*) is a hard outline: draw it as a stroke outside the box.
+      // Fully transparent shadows (Tailwind's unused ring and shadow slots) paint nothing; others are skipped.
+      const shadows = cs.boxShadow.split(/,(?![^(]*\))/).map((s) => s.trim());
+      const skipped = [];
+      const rings = [];
+      for (const s of shadows) {
+        const m = s.match(/^((?:rgba?|color)\([^)]*\)|#[\da-f]+|\w+)\s+(-?[\d.]+)px\s+(-?[\d.]+)px\s+([\d.]+)px\s+(-?[\d.]+)px(\s+inset)?$/i);
+        const c = m ? colour(m[1]) : null;
+        if (m && (!c || c.a === 0)) continue;
+        if (m && !m[6] && +m[2] === 0 && +m[3] === 0 && +m[4] === 0 && +m[5] > 0) rings.push({ c, w: +m[5] });
+        else skipped.push(s);
+      }
+      // Later shadows are drawn underneath earlier ones, and all of them under the box.
+      for (const g of rings) {
+        out.unshift({ t: 'rect', name: 'Ring', x: b.x - g.w / 2, y: b.y - g.w / 2, w: b.w + g.w, h: b.h + g.w,
+          rx: rx ? rx + g.w / 2 : 0, fill: null, stroke: g.c.hex, so: r2(g.c.a * op), sw: g.w,
+          box: [b.x - g.w, b.y - g.w, b.w + 2 * g.w, b.h + 2 * g.w] });
+      }
+      if (skipped.length) log('skip', `box-shadow skipped: ${skipped.join(', ')}`, el);
+    }
     if (cs.backgroundImage && cs.backgroundImage !== 'none') {
       const m = cs.backgroundImage.match(/^url\("?(.*?)"?\)$/);
       if (m) out.push({ t: 'image', name: 'Background image', x: b.x, y: b.y, w: b.w, h: b.h, src: m[1], box: [b.x, b.y, b.w, b.h] });
@@ -687,6 +708,33 @@ async (opts) => {
     return kids;
   }
 
+  // An <img> with object-fit other than fill, redrawn as the browser shows it (cropped for cover, letterboxed
+  // for contain), so the SVG's image fills its box without stretching. Returns a PNG data URL, or null if the
+  // image isn't loaded or is cross-origin (the canvas would be tainted).
+  function fitImage(el, cs, b) {
+    const nw = el.naturalWidth, nh = el.naturalHeight;
+    if (!el.complete || !nw || !nh || !b.w || !b.h) return null;
+    const fit = cs.objectFit;
+    let s = fit === 'cover' ? Math.max(b.w / nw, b.h / nh)
+      : fit === 'contain' ? Math.min(b.w / nw, b.h / nh)
+      : fit === 'none' ? 1
+      : fit === 'scale-down' ? Math.min(1, b.w / nw, b.h / nh) : null;
+    if (s === null) return null;
+    const dw = nw * s, dh = nh * s;
+    const pos = cs.objectPosition.split(/\s+/);
+    const at = (v, free) => v && v.endsWith('%') ? free * parseFloat(v) / 100 : v ? parseFloat(v) : free / 2;
+    const dx = at(pos[0], b.w - dw), dy = at(pos[1], b.h - dh);
+    // Keep the image's own detail, at least the capture's scale and at most 4 image pixels per CSS px.
+    const k = Math.max(opts.scale, Math.min(1 / s, 4));
+    const c = document.createElement('canvas');
+    c.width = Math.round(b.w * k);
+    c.height = Math.round(b.h * k);
+    const g = c.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(el, dx * k, dy * k, dw * k, dh * k);
+    try { return c.toDataURL('image/png'); } catch (e) { return null; }
+  }
+
   // ---- The walk ----
   const SKIP = new Set(['script', 'style', 'template', 'head', 'meta', 'link', 'noscript', 'title', 'base']);
   function walk(el, ctx) {
@@ -719,8 +767,12 @@ async (opts) => {
       let src = tag === 'img' ? el.currentSrc || el.src : null;
       if (tag === 'canvas') try { src = el.toDataURL('image/png'); } catch (e) { log('skip', 'canvas is tainted and cannot be copied', el); }
       if (tag === 'video') log('skip', 'video is not copied', el);
+      if (tag === 'img' && src && cs.objectFit !== 'fill') {
+        const fitted = fitImage(el, cs, b);
+        if (fitted) src = fitted;
+        else log('approx', `object-fit ${cs.objectFit} drawn stretched (image could not be copied to a canvas)`, el);
+      }
       if (src) node.kids.push({ t: 'image', name: el.alt || name, x: b.x, y: b.y, w: b.w, h: b.h, src, box: [b.x, b.y, b.w, b.h] });
-      if (tag === 'img' && cs.objectFit !== 'fill') log('approx', `object-fit ${cs.objectFit} drawn stretched`, el);
       return node;
     }
     if (tag === 'input' || tag === 'select' || tag === 'textarea') {
