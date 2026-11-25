@@ -21,7 +21,7 @@ This creates a venv at `~/.cache/html-to-figma/venv` with Playwright, PyYAML, nu
 
 ## 2. Write a states file
 
-One YAML file lists the screens: a name, an optional URL hash, and the clicks, fills, selects and waits that reach each one. See `references/states-format.md`; `examples/peat.states.yaml` covers every PEAT view and a scripted survey. Hide anything that isn't part of the design (dev panels, cookie banners) with `hide:`.
+One YAML file lists the screens: a name, an optional URL hash, and the clicks, fills, selects and waits that reach each one. See `references/states-format.md`; `examples/checkin.states.yaml`, for a made-up check-in prototype, covers every view and a form filled in step by step. Hide anything that isn't part of the design (dev panels, cookie banners) with `hide:`.
 
 To find selectors, read the page source: the render functions show the `data-*` hooks buttons use. Prefer those to text or position.
 
@@ -33,7 +33,7 @@ $PY scripts/html_to_figma.py my.states.yaml [--only state ...] [--width 1147] [-
 
 For each state it:
 
-1. loads the page fresh at the given width (default 1147, the layout width of the hand-made PEAT captures), runs the actions, waits for fonts, freezes animations, drops focus and grows the viewport to the full scroll height;
+1. loads the page fresh at the given width (default 1147), runs the actions, waits for fonts, freezes animations, drops focus and grows the viewport to the full scroll height;
 2. screenshots it at `scale` (default 2) as `browser.png`;
 3. runs `scripts/extract.js` in the page, which walks visible elements (`checkVisibility()`), so inactive `.view`s are skipped, and builds the layer tree;
 4. writes `<state>.svg`;

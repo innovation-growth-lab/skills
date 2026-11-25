@@ -1,0 +1,62 @@
+# A made-up check-in prototype: every view, and one check-in filled in.
+# Run: python3 scripts/html_to_figma.py examples/checkin.states.yaml
+page: "~/Downloads/Check-in prototype.html"
+out: ~/Downloads/checkin-figma
+width: 1280          # a smaller laptop, the screen most IGL readers use
+scale: 2
+hide:
+  - .proto           # "Prototype controls" panel: not part of the design
+  - .cookie-banner
+
+states:
+  - name: setup
+    hash: "#setup"
+
+  - name: setup-goals
+    hash: "#setup"
+    actions:
+      - click: '[data-next="0"]'
+
+  - name: setup-team
+    hash: "#setup"
+    actions:
+      - click: '#stepbar [data-step="2"]'
+
+  - name: checkin-intro
+    hash: "#checkin"
+
+  - name: checkin-goal-1
+    hash: "#checkin"
+    actions:
+      - click: '[data-ci="start"]'
+      - fill: { selector: '[name="progress"]', value: 60 }
+      - select: { selector: '[name="confidence"]', label: "Fairly confident" }
+      - fill: { selector: '[name="note"]', value: "Two of the three workshops have run." }
+      - wait: '#progress-chart circle'
+
+  - name: checkin-goal-2
+    hash: "#checkin"
+    actions:
+      - click: '[data-ci="start"]'
+      - fill: { selector: '[name="progress"]', value: 60 }
+      - select: { selector: '[name="confidence"]', label: "Fairly confident" }
+      - click: '[data-ci="next"]'
+      - wait: 'h3:has-text("Second goal")'
+      - fill: { selector: '[name="progress"]', value: 25 }
+      - select: { selector: '[name="confidence"]', label: "Not sure yet" }
+
+  - name: checkin-done
+    hash: "#checkin"
+    actions:
+      - click: '[data-ci="start"]'
+      - fill: { selector: '[name="progress"]', value: 60 }
+      - select: { selector: '[name="confidence"]', label: "Fairly confident" }
+      - click: '[data-ci="next"]'
+      - fill: { selector: '[name="progress"]', value: 25 }
+      - select: { selector: '[name="confidence"]', label: "Not sure yet" }
+      - click: '[data-ci="next"]'
+      - wait: 'text=Thanks, that’s saved'
+
+  - name: summary
+    hash: "#summary"
+    hide: [".toast"]
